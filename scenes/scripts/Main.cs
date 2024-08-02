@@ -9,7 +9,6 @@ public partial class Main : Node {
 	private int _score;
 
 	public override void _Ready() {
-		NewGame();
 	}
 
 	public override void _Process(double delta) {
@@ -18,6 +17,7 @@ public partial class Main : Node {
 	public void GameOver() {
 		GetNode<Timer>("MobTimer").Stop();
 		GetNode<Timer>("ScoreTimer").Stop();
+		GetNode<Hud>("Hud").ShowGameOver();
 	}
 
 	public void NewGame() {
@@ -29,6 +29,12 @@ public partial class Main : Node {
 		player.Start(startPosition.Position);
 
 		GetNode<Timer>("StartTimer").Start();
+
+		var hud = GetNode<Hud>("Hud");
+		hud.UpdateScore(_score);
+		hud.ShowMessage("Get Ready!");
+
+		GetTree().CallGroup("mobs", Node.MethodName.QueueFree);
 	}
 
 	private void OnStartTimerTimeout() {
@@ -38,6 +44,7 @@ public partial class Main : Node {
 
 	private void OnScoreTimerTimeout() {
 		_score++;
+		GetNode<Hud>("Hud").UpdateScore(_score);
 	}
 
 	private void OnMobTimerTimeout() {
