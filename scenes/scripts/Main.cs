@@ -18,6 +18,8 @@ public partial class Main : Node {
 		GetNode<Timer>("MobTimer").Stop();
 		GetNode<Timer>("ScoreTimer").Stop();
 		GetNode<Hud>("Hud").ShowGameOver();
+		GetNode<AudioStreamPlayer>("Music").Stop();
+		GetNode<AudioStreamPlayer>("DeathSound").Play();
 	}
 
 	public void NewGame() {
@@ -26,6 +28,7 @@ public partial class Main : Node {
 		var player = GetNode<Player>("Player");
 		var startPosition = GetNode<Marker2D>("StartPosition");
 
+		GetNode<AudioStreamPlayer>("Music").Play();
 		player.Start(startPosition.Position);
 
 		GetNode<Timer>("StartTimer").Start();
